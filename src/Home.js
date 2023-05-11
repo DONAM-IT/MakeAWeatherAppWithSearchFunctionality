@@ -12,11 +12,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Cards from './Cards';
 import {FlatList} from 'react-native';
 
-export default function Home() {
+export default function Home(props) {
+  // Destructuring array, setCity dùng để cập nhật biến city lưu trong state của thằng react
   const [city, setCity] = useState('');
   const cities = [
     {
-      name: 'New Dlhi',
+      name: 'New Delhi',
       image: require('../assets/images/image3.jpg'),
     },
     {
@@ -63,6 +64,7 @@ export default function Home() {
             style={{height: 46, width: 46, borderRadius: 50}}
           />
         </View>
+
         <View style={{paddingHorizontal: 20}}>
           <Text style={{fontSize: 40, color: 'white'}}>Hello S.G</Text>
           <Text style={{color: 'white', fontSize: 22, fontWeight: 'bold'}}>
@@ -86,7 +88,14 @@ export default function Home() {
               placeholderTextColor="white"
               style={{paddingHorizontal: 10, color: 'white', fontSize: 16}}
             />
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (!city.trim()) {
+                  alert('Please enter a valid city name.');
+                } else {
+                  props.navigation.navigate('Details', {name: city});
+                }
+              }}>
               <Icon name="search" size={22} color="white" />
             </TouchableOpacity>
           </View>
@@ -104,7 +113,11 @@ export default function Home() {
             horizontal
             data={cities}
             renderItem={({item}) => (
-              <Cards name={item.name} image={item.image} />
+              <Cards
+                name={item.name}
+                image={item.image}
+                navigation={props.navigation}
+              />
             )}
           />
         </View>
